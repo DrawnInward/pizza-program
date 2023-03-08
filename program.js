@@ -1,3 +1,9 @@
+/* things to add and sort out:
+* you need to add a way to move the counters back if the button gets accidentally pressed.
+* you need to add a way to remove people from the array
+* you need too sort out how the display current pizza and the pizza ready functions interact when there is 
+only one pizza at the at the beginning */ 
+
 const readline = require('readline');
 const fs = require('fs');
 
@@ -11,7 +17,7 @@ const rl = readline.createInterface({
 });
 
 function displayCurrentAndNextPizzas() {
-  if (currentPizzaIndex >= pizzaArray.length) {
+if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
     console.log(`\n${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex}, is ready!\n`);
@@ -54,8 +60,7 @@ function addCustomer() {
   });
 }
 
-
-addCustomer();
+addCustomer()
 
 process.on('exit', () => {
   const data = JSON.stringify(pizzaArray);
