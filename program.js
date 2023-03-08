@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const pizzaArray = [];
 let currentPizzaIndex = 0;
-let nextPizzaIndex = 0;
+let nextPizzaIndex = 1;
 
 const rl = readline.createInterface({
   input: process.stdin,
