@@ -2,7 +2,7 @@
 * you need to add a way to move the counters back if the button gets accidentally pressed.
 * you need to add a way to remove people from the array
 * you need too sort out how the display current pizza and the pizza ready functions interact when there is 
-only one pizza at the at the beginning */ 
+only one pizza at the beginning */ 
 
 
 const readline = require('readline'); //enables the readline module so that so that we can handle user input line by line.
