@@ -16,7 +16,7 @@ const pizzaArray = [];
 let currentPizzaIndex = 0;
 let nextPizzaIndex = 1;
 
-// this function displays the pizza that is ready and the pizza being prepared.
+// this function displays the pizza that is ready and the pizza being prepared. This function should also clear the terminal so that only the cirrent and next pizzas and the input are displayed.
 function displayCurrentAndNextPizzas() { 
 if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
