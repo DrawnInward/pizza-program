@@ -12,13 +12,13 @@ const rl = readline.createInterface({
 
 function displayCurrentAndNextPizzas() {
   if (currentPizzaIndex >= pizzaArray.length) {
-    console.log("No more pizzas!");
+    console.log("\nNo more pizzas!\n");
   } else {
-    console.log(`${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex}, is ready!`);
+    console.log(`\n${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex}, is ready!\n`);
     if (nextPizzaIndex >= pizzaArray.length) {
-      console.log("Next Pizza: None");
+      console.log("Next Pizza: None\n");
     } else {
-      console.log(`${pizzaArray[nextPizzaIndex].name}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex} is now being prepared.`);
+      console.log(`${pizzaArray[nextPizzaIndex].name}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex} is now being prepared.\n`);
     }
   }
 }
@@ -44,7 +44,7 @@ function addCustomer() {
       displayCurrentAndNextPizzas();
       addCustomer()
     } else {
-      rl.question(`What pizza would you like ${name}? ` , (pizza) => {
+      rl.question(`\nWhat pizza would you like ${name}? ` , (pizza) => {
         pizzaArray.push({ name, pizza });
         console.log(`Thank you, ${name}! Your ${pizza} pizza has been added to the list!`);
         displayCurrentAndNextPizzas();
