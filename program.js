@@ -43,7 +43,7 @@ function pizzaReady() {
 /* This function uses readline to allow users to input their names and pizza preferences.
 It is recursive until stopped by typing stop into the name prompt.
 Typing log into the name prompt will display the entire pizza array.
-Typing next into the name prompt will increase the value of currentPizzaIndex and nextPizzaIndex by one.*/
+Typing next into the name prompt will increase the value of currentPizzaIndex and nextPizzaIndex by one (at some point I plan to replace this with a physical button).*/
 function addCustomer() {
   rl.question('Please enter your name: ', (name) => {
     if (name.toLowerCase() === "stop") {
