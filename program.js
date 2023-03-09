@@ -1,8 +1,7 @@
 /* things to add and sort out:
-* you need to add a way to move the counters back if the button gets accidentally pressed.
 * you need to add a way to remove people from the array
 * you need too sort out how the display current pizza and the pizza ready functions interact when there is 
-only one pizza at the beginning */ 
+only one pizza at the beginning add order numbers to pizza array */ 
 
 
 const readline = require('readline'); //enables the readline module so that so that we can handle user input line by line.
@@ -70,8 +69,9 @@ function addCustomer() {
       addCustomer()
     } else {
       rl.question(`\nWhat pizza would you like ${name}? ` , (pizza) => {
-        pizzaArray.push({ name, pizza });
-        console.log(`\nThank you, ${name}! Your ${pizza} pizza has been added to the list! You are number ${pizzaArray.length}.`);
+        let customerNumber = pizzaArray.length + 1
+        pizzaArray.push({ name, pizza, customerNumber });
+        console.log(`\nThank you, ${name}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`);
         displayCurrentAndNextPizzas();
         addCustomer();
       });
