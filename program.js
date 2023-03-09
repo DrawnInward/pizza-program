@@ -21,11 +21,11 @@ function displayCurrentAndNextPizzas() {
 if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
-    console.log(`\n${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex}, is ready!\n`);
+    console.log(`\n${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex + 1}, is ready!\n`);
     if (nextPizzaIndex >= pizzaArray.length) {
       console.log("Next Pizza: None\n");
     } else {
-      console.log(`${pizzaArray[nextPizzaIndex].name}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex} is now being prepared.\n`);
+      console.log(`${pizzaArray[nextPizzaIndex].name}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex + 1} is now being prepared.\n`);
     }
   }
 } 
@@ -39,6 +39,15 @@ function pizzaReady() {
     nextPizzaIndex++;
   }
 }
+
+function reverseCounters() {
+  if (currentPizzaIndex === 0) {
+    console.log("\nDu kannst nicht weiter zurückgehen, Dumme.");
+  } else {
+    currentPizzaIndex--;
+    nextPizzaIndex--;
+  }
+} 
 
 /* This function uses readline to allow users to input their names and pizza preferences.
 It is recursive until stopped by typing stop into the name prompt.
@@ -55,10 +64,14 @@ function addCustomer() {
       pizzaReady()
       displayCurrentAndNextPizzas();
       addCustomer()
+    } else if (name.toLowerCase() === "reverse") {
+      reverseCounters()
+      displayCurrentAndNextPizzas();
+      addCustomer()
     } else {
       rl.question(`\nWhat pizza would you like ${name}? ` , (pizza) => {
         pizzaArray.push({ name, pizza });
-        console.log(`\nThank you, ${name}! Your ${pizza} pizza has been added to the list!`);
+        console.log(`\nThank you, ${name}! Your ${pizza} pizza has been added to the list! You are number ${pizzaArray.length}.`);
         displayCurrentAndNextPizzas();
         addCustomer();
       });
