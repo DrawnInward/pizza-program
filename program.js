@@ -58,7 +58,7 @@ console.log(`\nThank you, ${customerName}! Your ${pizza} pizza has been added to
 const removeCustomer = (customerNumber) => {
   const index = pizzaArray.findIndex(x => x.customerNumber === customerNumber);
   if (index !== -1) {
-    delete pizzaArray.splice(index, 1);
+    pizzaArray.splice(index, 1);
     console.log(`Customer ${customerNumber} has been removed.`);
   } else {
     console.log(`No customer with number ${customerNumber} was found.`);
