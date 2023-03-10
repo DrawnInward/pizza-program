@@ -20,11 +20,11 @@ function displayCurrentAndNextPizzas() {
 if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
-    console.log(`\n${pizzaArray[currentPizzaIndex].name}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex + 1}, is ready!\n`);
+    console.log(`\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex + 1}, is ready!\n`);
     if (nextPizzaIndex >= pizzaArray.length) {
       console.log("Next Pizza: None\n");
     } else {
-      console.log(`${pizzaArray[nextPizzaIndex].name}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex + 1} is now being prepared.\n`);
+      console.log(`${pizzaArray[nextPizzaIndex].customerName}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex + 1} is now being prepared.\n`);
     }
   }
 } 
@@ -48,30 +48,35 @@ function reverseCounters() {
   }
 } 
 
+function updateArray(customerName, pizza) {
+let customerNumber = pizzaArray.length + 1
+pizzaArray.push({ customerName, pizza, customerNumber });
+console.log(`\nThank you, ${customerName}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`);
+}
+
+
 /* This function uses readline to allow users to input their names and pizza preferences.
 It is recursive until stopped by typing stop into the name prompt.
 Typing log into the name prompt will display the entire pizza array.
 Typing next into the name prompt will increase the value of currentPizzaIndex and nextPizzaIndex by one (at some point I plan to replace this with a physical button).*/
 function addCustomer() {
-  rl.question('Please enter your name: ', (name) => {
-    if (name.toLowerCase() === "stop") {
+  rl.question('Please enter your name: ', (customerName) => {
+    if (customerName.toLowerCase() === "stop") {
       return rl.close();
-    } else if (name.toLowerCase() === "log") {
+    } else if (customerName.toLowerCase() === "log") {
       console.log(pizzaArray)
       addCustomer()
-    } else if (name.toLowerCase() === "next") {
+    } else if (customerName.toLowerCase() === "next") {
       pizzaReady()
       displayCurrentAndNextPizzas();
       addCustomer()
-    } else if (name.toLowerCase() === "reverse") {
+    } else if (customerName.toLowerCase() === "reverse") {
       reverseCounters()
       displayCurrentAndNextPizzas();
       addCustomer()
     } else {
-      rl.question(`\nWhat pizza would you like ${name}? ` , (pizza) => {
-        let customerNumber = pizzaArray.length + 1
-        pizzaArray.push({ name, pizza, customerNumber });
-        console.log(`\nThank you, ${name}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`);
+      rl.question(`\nWhat pizza would you like ${customerName}? ` , (pizza) => {
+        updateArray(customerName, pizza)
         displayCurrentAndNextPizzas();
         addCustomer();
       });
