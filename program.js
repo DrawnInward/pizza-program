@@ -15,18 +15,19 @@ const rl = readline.createInterface({
 const pizzaArray = [];
 let currentPizzaIndex = 0;
 let nextPizzaIndex = 1;
-let uniqueCustomerNumber = 0 
+let uniqueCustomerNumber = 1 
 
 // this function displays the pizza that is ready and the pizza being prepared. This function should also clear the terminal so that only the cirrent and next pizzas and the input are displayed.
+
 function displayCurrentAndNextPizzas() { 
 if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
-    console.log(`\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${currentPizzaIndex + 1}, is ready!\n`);
+    console.log(`\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${pizzaArray[currentPizzaIndex].customerNumber}, is ready!\n`);
     if (nextPizzaIndex >= pizzaArray.length) {
       console.log("Next Pizza: None\n");
     } else {
-      console.log(`${pizzaArray[nextPizzaIndex].customerName}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${nextPizzaIndex + 1} is now being prepared.\n`);
+      console.log(`${pizzaArray[nextPizzaIndex].customerName}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${pizzaArray[nextPizzaIndex].customerNumber} is now being prepared.\n`);
     }
   }
 } 
@@ -90,7 +91,8 @@ function addCustomer() {
     } else if (customerName.toLowerCase() === "remove") {
       rl.question(`\nPlease enter the customer number: `, (number) => {
         let customerNumber = parseInt(number);
-        if (isNaN(customerNumber) || customerNumber <= 0 || customerNumber > pizzaArray.length) {
+        // you need to change the last bit of this line to check if the customer number actually exists, then i think it will work.
+        if (isNaN(customerNumber) || customerNumber <= 0 || customerNumber > pizzaArray.length || pizzaArray[pizzaArray.findIndex(x => x.customerNumber === customerNumber)] === -1) { // you need to change the last bit of this line to check if the customer number actually exists, then i think it will work.
           console.log(`Invalid customer number. Please try again.`);
           addCustomer();
         } else {
