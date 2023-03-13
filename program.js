@@ -57,7 +57,7 @@ pizzaArray.push({ customerName, pizza, customerNumber });
 console.log(`\nThank you, ${customerName}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`);
 }
 
-// Current problems are that the pizza counters are counting through the index's not the customer numbers, so it displays pizzas that have already been removed. Also new pizzas are assigned the same customer numbers because the array length gets shorter. Maybe use delete instead of splice? (doesn't work, maybe can't iterate properly over undefined element in array).
+// This function removes customers from the list when inputted with a valid customer number.
 const removeCustomer = (customerNumber) => {
   const index = pizzaArray.findIndex(x => x.customerNumber === customerNumber);
   if (index !== -1) {
@@ -92,11 +92,12 @@ function addCustomer() {
       rl.question(`\nPlease enter the customer number: `, (number) => {
         let customerNumber = parseInt(number);
         // you need to change the last bit of this line to check if the customer number actually exists, then i think it will work.
-        if (isNaN(customerNumber) || customerNumber <= 0 || customerNumber > pizzaArray.length || pizzaArray[pizzaArray.findIndex(x => x.customerNumber === customerNumber)] === -1) { // you need to change the last bit of this line to check if the customer number actually exists, then i think it will work.
+        let removedCustomerIndex = pizzaArray.findIndex(x => x.customerNumber === customerNumber) 
+        if (isNaN(customerNumber) || customerNumber <= 0 || customerNumber > pizzaArray.length || removedCustomerIndex === -1) { // you need to change the last bit of this line to check if the customer number actually exists, then i think it will work.
           console.log(`Invalid customer number. Please try again.`);
           addCustomer();
         } else {
-          let removedCustomer = pizzaArray[pizzaArray.findIndex(x => x.customerNumber === customerNumber)];
+          let removedCustomer = pizzaArray[removedCustomerIndex];
           rl.question(`Type "yes" to remove ${removedCustomer.customerName}'s ${removedCustomer.pizza} pizza, number ${removedCustomer.customerNumber}. `, (answer) => {
             if (answer.toLowerCase() === "yes") {
               removeCustomer(customerNumber);
