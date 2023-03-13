@@ -61,7 +61,7 @@ console.log(`\nThank you, ${customerName}! Your ${pizza} pizza has been added to
 function removeCustomer(number) {
   let removedCustomerNumber = parseInt(number);
   let removedCustomerIndex = pizzaArray.findIndex(x => x.customerNumber === removedCustomerNumber) 
-  if (isNaN(removedCustomerNumber) || removedCustomerNumber <= 0 || removedCustomerNumber > pizzaArray.length || removedCustomerIndex === -1) {
+  if (isNaN(removedCustomerNumber) || removedCustomerNumber <= 0 || removedCustomerIndex === -1) {
     console.log(`Invalid customer number. Please try again.`);
     displayCurrentAndNextPizzas()
     addCustomer();
