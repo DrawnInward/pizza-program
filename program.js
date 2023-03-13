@@ -1,6 +1,7 @@
 /* things to add and sort out:
+add a function that records the average time between pizzas (next function/button click?) and output it.
+replace the next and reverse functions with two buttons.
  */ 
-
 
 const readline = require('readline'); //enables the readline module so that so that we can handle user input line by line.
 const fs = require('fs'); //enables the file system module so that the pizzaArray can be saved at the end. 
