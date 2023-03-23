@@ -36,9 +36,9 @@ let currentPizzaIndex = 0;
 let nextPizzaIndex = 1
 let uniqueCustomerNumber = 1 
 
-// defines variables for the button presses.
+// defines that the buttons, upon interupt, call the applicable functions. Also implents the debounce deley.
 
-let nextButtonPress = nextButton.on("interrupt", function (level) {
+nextButton.on("interrupt", function (level) {
   // Check if the debounce timeout is still running
   if (nextButtonTimeout) {
     clearTimeout(nextButtonTimeout);
@@ -51,7 +51,7 @@ let nextButtonPress = nextButton.on("interrupt", function (level) {
   }, debounceDelay);
 });
 
-let reverseButtonPress = reverseButton.on("interrupt", function (level) {
+reverseButton.on("interrupt", function (level) {
    if (reverseButtonTimeout) {
     clearTimeout(reverseButtonTimeout);
   }
