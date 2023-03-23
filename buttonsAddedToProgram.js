@@ -161,8 +161,10 @@ function addCustomer() {
     addCustomer()//this calls the function for the first time.
 
 //this listens for the code ending and when it does it saves the pizza array to a .json
-process.on('exit', () => {
+process.on("SIGINT", function () {
+  console.log("\nExiting");
   const data = JSON.stringify(pizzaArray);
   fs.writeFileSync('pizza-orders.json', data);
   console.log("Pizza orders saved to file!");
+  process.exit();
 });
