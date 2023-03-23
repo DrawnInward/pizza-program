@@ -14,13 +14,11 @@ const nextButton = new Gpio(17, {
   mode: Gpio.INPUT,
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
-  alert: true
 });
-const reverseButton = new Gpio(18, {
+const reverseButton = new Gpio(22, {
   mode: Gpio.INPUT,
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
-  alert: true
 });
 
 /* these three variables are used to debounce the shitty buttons i bought *sigh*. 
