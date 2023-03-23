@@ -10,13 +10,13 @@ const rl = readline.createInterface({
 const Gpio = require('pigpio').Gpio;
 
 // configures two buttons
-const buttonNext = new Gpio(17, {
+const nextButton = new Gpio(17, {
   mode: Gpio.INPUT,
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
   alert: true
 });
-const buttonReverse = new Gpio(18, {
+const reverseButton = new Gpio(18, {
   mode: Gpio.INPUT,
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
