@@ -1,13 +1,19 @@
-const readline = require('readline'); //enables the readline module so that so that we can handle user input line by line.
-const fs = require('fs'); //enables the file system module so that the pizzaArray can be saved at the end. 
+/* Things to do:
+ * Test it is working properly, i think there might be a problem with the counters again.
+ * Test some more.
+ * Clear the terminal to some degree so the relevant information is easier to read.
+ * Make the json at the end save itself to the date/time etc. so it is unique, also make it back itself up, perhaps everytime a pizza is added it is saved.
+ * Make a way to convert a json back into a pizza array in case of someone knocking it or something */
+
+const readline = require("readline"); //enables the readline module so that so that we can handle user input line by line.
+const fs = require("fs"); //enables the file system module so that the pizzaArray can be saved at the end.
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 }); // defines an interface that reads input from command line.
 
-
 //imports pigpio module to handle Gpio pins
-const Gpio = require('pigpio').Gpio;
+const Gpio = require("pigpio").Gpio;
 
 // configures two buttons
 const nextButton = new Gpio(17, {
@@ -33,26 +39,29 @@ let reverseButtonTimeout;
 
 const pizzaArray = [];
 let currentPizzaIndex = 0;
-let nextPizzaIndex = 1
-let uniqueCustomerNumber = 1 
+let nextPizzaIndex = 1;
+let uniqueCustomerNumber = 1;
 
-/* this function displays the pizza that is ready and the pizza being prepared. 
-This function should also clear the terminal so that only the current and next pizzas and the input are displayed. */
+// this function displays the pizza that is ready and the pizza being prepared.
 
-function displayCurrentAndNextPizzas() { 
-if (currentPizzaIndex >= pizzaArray.length) {
+function displayCurrentAndNextPizzas() {
+  if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
-    console.log(`\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${pizzaArray[currentPizzaIndex].customerNumber}, is ready!\n`);
+    console.log(
+      `\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${pizzaArray[currentPizzaIndex].customerNumber}, is ready!\n`
+    );
     if (nextPizzaIndex >= pizzaArray.length) {
       console.log("Next Pizza: None\n");
     } else {
-      console.log(`${pizzaArray[nextPizzaIndex].customerName}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${pizzaArray[nextPizzaIndex].customerNumber} is now being prepared.\n`);
+      console.log(
+        `${pizzaArray[nextPizzaIndex].customerName}'s ${pizzaArray[nextPizzaIndex].pizza} pizza, number ${pizzaArray[nextPizzaIndex].customerNumber} is now being prepared.\n`
+      );
     }
   }
-} 
+}
 
- //this function moves the pizza counters up as the pizzas become ready.
+//this function moves the pizza counters up as the pizzas become ready.
 function pizzaReady() {
   if (currentPizzaIndex >= pizzaArray.length) {
     console.log("No more pizzas!");
@@ -70,64 +79,76 @@ function reverseCounters() {
     currentPizzaIndex--;
     nextPizzaIndex--;
   }
-} 
+}
 
 //this function creates a customer object within the pizzaArray
 function updateArray(customerName, pizza) {
-let customerNumber = uniqueCustomerNumber++
-pizzaArray.push({ customerName, pizza, customerNumber });
-console.log(`\nThank you, ${customerName}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`);
+  let customerNumber = uniqueCustomerNumber++;
+  pizzaArray.push({ customerName, pizza, customerNumber });
+  console.log(
+    `\nThank you, ${customerName}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`
+  );
 }
 
 // This function removes customers from the list when inputted with a valid customer number.
 function removeCustomer(number) {
   let removedCustomerNumber = parseInt(number);
-  let removedCustomerIndex = pizzaArray.findIndex(x => x.customerNumber === removedCustomerNumber) 
-  if (isNaN(removedCustomerNumber) || removedCustomerNumber <= 0 || removedCustomerIndex === -1) {
+  let removedCustomerIndex = pizzaArray.findIndex(
+    (x) => x.customerNumber === removedCustomerNumber
+  );
+  if (
+    isNaN(removedCustomerNumber) ||
+    removedCustomerNumber <= 0 ||
+    removedCustomerIndex === -1
+  ) {
     console.log(`Invalid customer number. Please try again.`);
-    displayCurrentAndNextPizzas()
+    displayCurrentAndNextPizzas();
     addCustomer();
   } else {
     let removedCustomer = pizzaArray[removedCustomerIndex];
-    rl.question(`Type "yes" to remove ${removedCustomer.customerName}'s ${removedCustomer.pizza} pizza, number ${removedCustomer.customerNumber}. `, (answer) => {
-      if (answer.toLowerCase() === "yes") {
-        pizzaArray.splice(removedCustomerIndex, 1)
-        console.log(`Customer ${removedCustomerNumber} has been removed.`);
-      } else {
-        console.log(`Customer number ${removedCustomerNumber} was not removed.`);
+    rl.question(
+      `Type "yes" to remove ${removedCustomer.customerName}'s ${removedCustomer.pizza} pizza, number ${removedCustomer.customerNumber}. `,
+      (answer) => {
+        if (answer.toLowerCase() === "yes") {
+          pizzaArray.splice(removedCustomerIndex, 1);
+          console.log(`Customer ${removedCustomerNumber} has been removed.`);
+        } else {
+          console.log(
+            `Customer number ${removedCustomerNumber} was not removed.`
+          );
+        }
+        displayCurrentAndNextPizzas();
+        addCustomer();
       }
-      displayCurrentAndNextPizzas();
-      addCustomer();
-    })
+    );
   }
-};
-
-
+}
 
 /* This function uses readline to allow users to input their names and pizza preferences.
-It is recursive until stopped by typing stop into the name prompt.
 Typing log into the name prompt will display the entire pizza array.
-Typing next into the name prompt will increase the value of currentPizzaIndex and nextPizzaIndex by one (at some point I plan to replace this with a physical button).*/
+Typing next into the name prompt will increase the value of currentPizzaIndex 
+and nextPizzaIndex by one. This can also be done with the two buttons. */
+
 function addCustomer() {
-  rl.question('Please enter your name: ', (customerName) => {
+  rl.question("Please enter your name: ", (customerName) => {
     if (customerName.toLowerCase() === "log") {
-      console.log(pizzaArray)
-      addCustomer()
+      console.log(pizzaArray);
+      addCustomer();
     } else if (customerName.toLowerCase() === "next") {
-      pizzaReady()
+      pizzaReady();
       displayCurrentAndNextPizzas();
-      addCustomer()
+      addCustomer();
     } else if (customerName.toLowerCase() === "reverse") {
-      reverseCounters()
+      reverseCounters();
       displayCurrentAndNextPizzas();
-      addCustomer()
+      addCustomer();
     } else if (customerName.toLowerCase() === "remove") {
       rl.question(`\nPlease enter the customer number: `, (number) => {
-        removeCustomer(number)
-      })
+        removeCustomer(number);
+      });
     } else {
       rl.question(`\nWhat pizza would you like ${customerName}? `, (pizza) => {
-        updateArray(customerName, pizza)
+        updateArray(customerName, pizza);
         displayCurrentAndNextPizzas();
         addCustomer();
       });
@@ -135,9 +156,7 @@ function addCustomer() {
   });
 }
 
-    addCustomer()//this calls the function for the first time.
-
-// defines that the buttons, upon interupt, call the applicable functions. Also implents the debounce deley.
+// defines that the buttons, upon interrupt, call the applicable functions. Also implements the debounce deley.
 
 nextButton.on("interrupt", function (level) {
   // Check if the debounce timeout is still running
@@ -146,28 +165,30 @@ nextButton.on("interrupt", function (level) {
   }
   // Start a new debounce timeout
   nextButtonTimeout = setTimeout(() => {
-    pizzaReady()
+    pizzaReady();
     displayCurrentAndNextPizzas();
-    addCustomer()
+    addCustomer();
   }, debounceDelay);
 });
 
 reverseButton.on("interrupt", function (level) {
-   if (reverseButtonTimeout) {
+  if (reverseButtonTimeout) {
     clearTimeout(reverseButtonTimeout);
   }
   reverseButtonTimeout = setTimeout(() => {
-    reverseCounters()
+    reverseCounters();
     displayCurrentAndNextPizzas();
-    addCustomer()
+    addCustomer();
   }, debounceDelay);
 });
+
+addCustomer(); //this calls the function for the first time and begins the cycle.
 
 //this listens for the code ending and when it does it saves the pizza array to a .json
 process.on("SIGINT", function () {
   console.log("\nExiting");
   const data = JSON.stringify(pizzaArray);
-  fs.writeFileSync('pizza-orders.json', data);
+  fs.writeFileSync("pizza-orders.json", data);
   console.log("Pizza orders saved to file!");
   process.exit();
 });
