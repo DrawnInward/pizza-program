@@ -36,32 +36,6 @@ let currentPizzaIndex = 0;
 let nextPizzaIndex = 1
 let uniqueCustomerNumber = 1 
 
-// defines that the buttons, upon interupt, call the applicable functions. Also implents the debounce deley.
-
-nextButton.on("interrupt", function (level) {
-  // Check if the debounce timeout is still running
-  if (nextButtonTimeout) {
-    clearTimeout(nextButtonTimeout);
-  }
-  // Start a new debounce timeout
-  nextButtonTimeout = setTimeout(() => {
-    pizzaReady()
-    displayCurrentAndNextPizzas();
-    addCustomer()
-  }, debounceDelay);
-});
-
-reverseButton.on("interrupt", function (level) {
-   if (reverseButtonTimeout) {
-    clearTimeout(reverseButtonTimeout);
-  }
-  reverseButtonTimeout = setTimeout(() => {
-    reverseCounters()
-    displayCurrentAndNextPizzas();
-    addCustomer()
-  }, debounceDelay);
-});
-
 /* this function displays the pizza that is ready and the pizza being prepared. 
 This function should also clear the terminal so that only the current and next pizzas and the input are displayed. */
 
@@ -136,9 +110,7 @@ Typing log into the name prompt will display the entire pizza array.
 Typing next into the name prompt will increase the value of currentPizzaIndex and nextPizzaIndex by one (at some point I plan to replace this with a physical button).*/
 function addCustomer() {
   rl.question('Please enter your name: ', (customerName) => {
-    if (customerName.toLowerCase() === "stop") {
-      return rl.close();
-    } else if (customerName.toLowerCase() === "log") {
+    if (customerName.toLowerCase() === "log") {
       console.log(pizzaArray)
       addCustomer()
     } else if (customerName.toLowerCase() === "next") {
@@ -164,6 +136,32 @@ function addCustomer() {
 }
 
     addCustomer()//this calls the function for the first time.
+
+// defines that the buttons, upon interupt, call the applicable functions. Also implents the debounce deley.
+
+nextButton.on("interrupt", function (level) {
+  // Check if the debounce timeout is still running
+  if (nextButtonTimeout) {
+    clearTimeout(nextButtonTimeout);
+  }
+  // Start a new debounce timeout
+  nextButtonTimeout = setTimeout(() => {
+    pizzaReady()
+    displayCurrentAndNextPizzas();
+    addCustomer()
+  }, debounceDelay);
+});
+
+reverseButton.on("interrupt", function (level) {
+   if (reverseButtonTimeout) {
+    clearTimeout(reverseButtonTimeout);
+  }
+  reverseButtonTimeout = setTimeout(() => {
+    reverseCounters()
+    displayCurrentAndNextPizzas();
+    addCustomer()
+  }, debounceDelay);
+});
 
 //this listens for the code ending and when it does it saves the pizza array to a .json
 process.on("SIGINT", function () {
