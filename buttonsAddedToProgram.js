@@ -44,7 +44,9 @@ let nextButtonPress = nextButton.on("interrupt", function (level) {
   }
   // Start a new debounce timeout
   nextButtonTimeout = setTimeout(() => {
-    console.log("Next");
+    pizzaReady()
+    displayCurrentAndNextPizzas();
+    addCustomer()
   }, debounceDelay);
 });
 
@@ -53,7 +55,9 @@ let reverseButtonPress = reverseButton.on("interrupt", function (level) {
     clearTimeout(reverseButtonTimeout);
   }
   reverseButtonTimeout = setTimeout(() => {
-    console.log("Reverse");
+    reverseCounters()
+    displayCurrentAndNextPizzas();
+    addCustomer()
   }, debounceDelay);
 });
 
@@ -136,11 +140,11 @@ function addCustomer() {
     } else if (customerName.toLowerCase() === "log") {
       console.log(pizzaArray)
       addCustomer()
-    } else if (customerName.toLowerCase() === "next" || nextButtonPress) {
+    } else if (customerName.toLowerCase() === "next") {
       pizzaReady()
       displayCurrentAndNextPizzas();
       addCustomer()
-    } else if (customerName.toLowerCase() === "reverse" || reverseButtonPress) {
+    } else if (customerName.toLowerCase() === "reverse") {
       reverseCounters()
       displayCurrentAndNextPizzas();
       addCustomer()
