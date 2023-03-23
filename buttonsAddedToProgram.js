@@ -33,6 +33,7 @@ let reverseButtonTimeout;
 
 const pizzaArray = [];
 let currentPizzaIndex = 0;
+let nextPizzaIndex = 1
 let uniqueCustomerNumber = 1 
 
 // defines variables for the button presses.
