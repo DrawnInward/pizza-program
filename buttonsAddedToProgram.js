@@ -1,12 +1,12 @@
 /* Things to do:
- * Test it is working properly, i think there might be a problem with the counters again.
+ * Test the program.
  * Test some more.
- * Make the json at the end save itself to the date/time etc. so it is unique, also make it back itself up, perhaps everytime a pizza is added it is saved.
- * Make a way to convert a json back into a pizza array in case of someone knocking it or something */
+ * Put a function that outputs the average time per pizza.
+ */
 
 const readline = require("readline"); //enables the readline module so that so that we can handle user input line by line.
 const fs = require("fs"); //enables the file system module so that the pizzaArray can be saved at the end.
-const clear = require('console-clear'); // library used to clear the console.
+const clear = require("console-clear"); // library used to clear the console.
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -42,11 +42,9 @@ let currentPizzaIndex = 0;
 let nextPizzaIndex = 1;
 let uniqueCustomerNumber = 1;
 
-
 // these will be used to assign a date to the backup of the pizzaArray
 const today = new Date();
 const dateString = today.toISOString().slice(0, 10); // get ISO date format -- yyyy-mm-dd
-
 
 // this function creates a backup of the pizzaArray with the date attached
 function backupPizzaArray() {
@@ -57,18 +55,18 @@ function backupPizzaArray() {
 
 function restorePizzaArray() {
   rl.question("Restore pizzaArray from which date? (yyyy-mm-dd) ", (date) => {
-  fs.readFile(`pizza-orders-${date}.json`, 'utf8', (err, data) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    pizzaArray = JSON.parse(data); // parses the data and assign it to the pizzaArray
-    uniqueCustomerNumber = pizzaArray[pizzaArray.length - 1].customerNumber + 1
-    console.log(pizzaArray)
+    fs.readFile(`pizza-orders-${date}.json`, "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      pizzaArray = JSON.parse(data); // parses the data and assign it to the pizzaArray
+      uniqueCustomerNumber =
+        pizzaArray[pizzaArray.length - 1].customerNumber + 1;
+      console.log(pizzaArray);
+    });
   });
-});
 }
-
 
 // this function displays the pizza that is ready and the pizza being prepared.
 
@@ -76,7 +74,7 @@ function displayCurrentAndNextPizzas() {
   if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
-    clear(true)
+    clear(true);
     console.log(
       `\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${pizzaArray[currentPizzaIndex].customerNumber}, is ready!\n`
     );
@@ -148,7 +146,7 @@ function removeCustomer(number) {
           );
         }
         displayCurrentAndNextPizzas();
-        backupPizzaArray()
+        backupPizzaArray();
         addCustomer();
       }
     );
@@ -178,8 +176,8 @@ function addCustomer() {
         removeCustomer(number);
       });
     } else if (customerName.toLowerCase() === "restorepizzaarray") {
-      restorePizzaArray()
-      addCustomer()
+      restorePizzaArray();
+      addCustomer();
     } else {
       rl.question(`\nWhat pizza would you like ${customerName}? `, (pizza) => {
         displayCurrentAndNextPizzas();
