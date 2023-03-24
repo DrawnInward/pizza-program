@@ -37,7 +37,7 @@ let reverseButtonTimeout;
 
 // defines the array that will be the list, and the counters that are used to navigate it.
 
-const pizzaArray = [];
+let pizzaArray = [];
 let currentPizzaIndex = 0;
 let nextPizzaIndex = 1;
 let uniqueCustomerNumber = 1;
