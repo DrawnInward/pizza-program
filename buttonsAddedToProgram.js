@@ -21,7 +21,7 @@ const nextButton = new Gpio(17, {
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
 });
-const reverseButton = new Gpio(22, {
+const reverseButton = new Gpio(27, {
   mode: Gpio.INPUT,
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
