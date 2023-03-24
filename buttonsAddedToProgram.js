@@ -57,7 +57,7 @@ function backupPizzaArray() {
 
 function restorePizzaArray() {
   rl.question("Restore pizzaArray from which date? (yyyy-mm-dd) ", (date) => {
-  fs.readFile(`pizza-orders-${date}`.json, 'utf8', (err, data) => {
+  fs.readFile(`pizza-orders-${date}.json`, 'utf8', (err, data) => {
     if (err) {
       console.log(err);
       return;
