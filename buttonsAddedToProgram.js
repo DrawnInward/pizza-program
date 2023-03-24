@@ -63,6 +63,7 @@ function restorePizzaArray() {
       return;
     }
     pizzaArray = JSON.parse(data); // parses the data and assign it to the pizzaArray
+    uniqueCustomerNumber = pizzaArray.length + 1
     console.log(pizzaArray)
   });
 });
