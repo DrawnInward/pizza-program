@@ -178,6 +178,7 @@ function addCustomer() {
       });
     } else if (customerName.toLowerCase() === "restorepizzaarray") {
       restorePizzaArray()
+      addCustomer()
     } else {
       rl.question(`\nWhat pizza would you like ${customerName}? `, (pizza) => {
         updateArray(customerName, pizza);
