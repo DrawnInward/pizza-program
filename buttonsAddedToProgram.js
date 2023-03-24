@@ -219,4 +219,5 @@ addCustomer(); //this calls the function for the first time and begins the cycle
 //this listens for the code ending and when it does it saves the pizza array to a .json
 process.on("SIGINT", function () {
   console.log("\nExiting");
+  process.exit();
 });
