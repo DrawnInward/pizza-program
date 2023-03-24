@@ -1,13 +1,12 @@
 /* Things to do:
  * Test it is working properly, i think there might be a problem with the counters again.
  * Test some more.
- * Clear the terminal to some degree so the relevant information is easier to read.
  * Make the json at the end save itself to the date/time etc. so it is unique, also make it back itself up, perhaps everytime a pizza is added it is saved.
  * Make a way to convert a json back into a pizza array in case of someone knocking it or something */
 
 const readline = require("readline"); //enables the readline module so that so that we can handle user input line by line.
 const fs = require("fs"); //enables the file system module so that the pizzaArray can be saved at the end.
-const clear = require('console-clear');
+const clear = require('console-clear'); // library used to clear the console.
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -42,6 +41,33 @@ const pizzaArray = [];
 let currentPizzaIndex = 0;
 let nextPizzaIndex = 1;
 let uniqueCustomerNumber = 1;
+
+
+// these will be used to assign a date to the backup of the pizzaArray
+const today = new Date();
+const dateString = today.toISOString().slice(0, 10); // get ISO date format -- yyyy-mm-dd
+
+
+// this function creates a backup of the pizzaArray with the date attached
+function backupPizzaArray() {
+  const filename = `pizza-orders-${dateString}.json`; // create filename with date
+  const data = JSON.stringify(pizzaArray);
+  fs.writeFileSync(filename, data);
+}
+
+function restorePizzaArray() {
+  rl.question("Restore pizzaArray from which date? (yyyy-mm-dd) ", (date) => {
+  fs.readFile(`pizza-orders-${date}`, 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    pizzaArray = JSON.parse(data); // parses the data and assign it to the pizzaArray
+    console.log(pizzaArray)
+  });
+});
+}
+
 
 // this function displays the pizza that is ready and the pizza being prepared.
 
@@ -90,6 +116,7 @@ function updateArray(customerName, pizza) {
   console.log(
     `\nThank you, ${customerName}! Your ${pizza} pizza has been added to the list! You are number ${customerNumber}.`
   );
+  backupPizzaArray();
 }
 
 // This function removes customers from the list when inputted with a valid customer number.
@@ -120,6 +147,7 @@ function removeCustomer(number) {
           );
         }
         displayCurrentAndNextPizzas();
+        backupPizzaArray()
         addCustomer();
       }
     );
@@ -148,6 +176,8 @@ function addCustomer() {
       rl.question(`\nPlease enter the customer number: `, (number) => {
         removeCustomer(number);
       });
+    } else if (customerName.toLowerCase() === "restorepizzarray") {
+      restorePizzaArray()
     } else {
       rl.question(`\nWhat pizza would you like ${customerName}? `, (pizza) => {
         updateArray(customerName, pizza);
