@@ -176,7 +176,7 @@ function addCustomer() {
       rl.question(`\nPlease enter the customer number: `, (number) => {
         removeCustomer(number);
       });
-    } else if (customerName.toLowerCase() === "restorepizzarray") {
+    } else if (customerName.toLowerCase() === "restorepizzaarray") {
       restorePizzaArray()
     } else {
       rl.question(`\nWhat pizza would you like ${customerName}? `, (pizza) => {
@@ -219,8 +219,4 @@ addCustomer(); //this calls the function for the first time and begins the cycle
 //this listens for the code ending and when it does it saves the pizza array to a .json
 process.on("SIGINT", function () {
   console.log("\nExiting");
-  const data = JSON.stringify(pizzaArray);
-  fs.writeFileSync("pizza-orders.json", data);
-  console.log("Pizza orders saved to file!");
-  process.exit();
 });
