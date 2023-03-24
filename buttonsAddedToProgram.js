@@ -7,6 +7,7 @@
 
 const readline = require("readline"); //enables the readline module so that so that we can handle user input line by line.
 const fs = require("fs"); //enables the file system module so that the pizzaArray can be saved at the end.
+const clear = require('console-clear');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -48,6 +49,7 @@ function displayCurrentAndNextPizzas() {
   if (currentPizzaIndex >= pizzaArray.length) {
     console.log("\nNo more pizzas!\n");
   } else {
+    clear(true)
     console.log(
       `\n${pizzaArray[currentPizzaIndex].customerName}'s ${pizzaArray[currentPizzaIndex].pizza} pizza, number ${pizzaArray[currentPizzaIndex].customerNumber}, is ready!\n`
     );
