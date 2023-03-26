@@ -12,7 +12,14 @@ const rl = readline.createInterface({
   output: process.stdout,
 }); // defines an interface that reads input from command line.
 
-//imports pigpio module to handle Gpio pins
+/*
+Imports pigpio module to handle Gpio pins.
+
+If running on a machine that does not have Gpio pins 
+comment out all the lines up to where debounceDelay is defined,
+and use next and reverse commands to move up and down the array.
+*/
+
 const Gpio = require("pigpio").Gpio;
 
 // configures two buttons
@@ -26,6 +33,33 @@ const reverseButton = new Gpio(27, {
   pullUpDown: Gpio.PUD_UP,
   edge: Gpio.FALLING_EDGE,
 });
+
+// defines that the buttons, upon interrupt, call the applicable functions. Also implements the debounce deley.
+
+nextButton.on("interrupt", function (level) {
+  // Check if the debounce timeout is still running
+  if (nextButtonTimeout) {
+    clearTimeout(nextButtonTimeout);
+  }
+  // Start a new debounce timeout
+  nextButtonTimeout = setTimeout(() => {
+    pizzaReady();
+    displayCurrentAndNextPizzas();
+    addCustomer();
+  }, debounceDelay);
+});
+
+reverseButton.on("interrupt", function (level) {
+  if (reverseButtonTimeout) {
+    clearTimeout(reverseButtonTimeout);
+  }
+  reverseButtonTimeout = setTimeout(() => {
+    reverseCounters();
+    displayCurrentAndNextPizzas();
+    addCustomer();
+  }, debounceDelay);
+});
+
 
 /* these three variables are used to debounce the shitty buttons i bought *sigh*. 
 Debounce delay can be set here but it really does need to be that high.
@@ -187,32 +221,6 @@ function addCustomer() {
     }
   });
 }
-
-// defines that the buttons, upon interrupt, call the applicable functions. Also implements the debounce deley.
-
-nextButton.on("interrupt", function (level) {
-  // Check if the debounce timeout is still running
-  if (nextButtonTimeout) {
-    clearTimeout(nextButtonTimeout);
-  }
-  // Start a new debounce timeout
-  nextButtonTimeout = setTimeout(() => {
-    pizzaReady();
-    displayCurrentAndNextPizzas();
-    addCustomer();
-  }, debounceDelay);
-});
-
-reverseButton.on("interrupt", function (level) {
-  if (reverseButtonTimeout) {
-    clearTimeout(reverseButtonTimeout);
-  }
-  reverseButtonTimeout = setTimeout(() => {
-    reverseCounters();
-    displayCurrentAndNextPizzas();
-    addCustomer();
-  }, debounceDelay);
-});
 
 addCustomer(); //this calls the function for the first time and begins the cycle.
 
